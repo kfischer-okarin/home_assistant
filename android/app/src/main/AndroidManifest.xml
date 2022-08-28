@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.things_at_home">
+    package="kfischer_okarin.things_at_home">
    <application
         android:label="things_at_home"
         android:name="${applicationName}"
