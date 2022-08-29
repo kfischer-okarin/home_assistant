@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kfischer_okarin.things_at_home">
    <application
-        android:label="things_at_home"
+        android:label="Things at Home"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
