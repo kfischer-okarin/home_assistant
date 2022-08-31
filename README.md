@@ -1,4 +1,4 @@
-# Things at Home
+# Home Assistant
 
 ## How To
 

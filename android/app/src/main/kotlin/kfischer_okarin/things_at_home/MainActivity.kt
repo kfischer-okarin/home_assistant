@@ -1,4 +1,4 @@
-package kfischer_okarin.things_at_home
+package kfischer_okarin.home_assistant
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = things_at_home
+PRODUCT_NAME = home_assistant
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = kfischer_okarin.thingsAtHome
+PRODUCT_BUNDLE_IDENTIFIER = kfischer_okarin.homeAssistant
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2022 kfischer_okarin. All rights reserved.

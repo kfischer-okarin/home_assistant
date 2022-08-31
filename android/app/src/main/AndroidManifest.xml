@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kfischer_okarin.things_at_home">
+    package="kfischer_okarin.home_assistant">
    <application
-        android:label="Things at Home"
+        android:label="Home Assistant"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

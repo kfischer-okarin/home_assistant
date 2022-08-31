@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:things_at_home/stock.dart';
+import 'package:home_assistant/stock.dart';
 
 void acceptanceTest(
     String description, Future<void> Function(AcceptanceTestDSL) callback,

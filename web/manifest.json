@@ -1,6 +1,6 @@
 {
-    "name": "things_at_home",
-    "short_name": "things_at_home",
+    "name": "home_assistant",
+    "short_name": "home_assistant",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
