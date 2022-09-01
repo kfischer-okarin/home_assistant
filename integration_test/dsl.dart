@@ -15,9 +15,11 @@ void acceptanceTest(
         await callback(dsl);
 
         fail('Test is pending but actually passed');
-      } catch (e) {
+      } on Exception catch (exception, stackTrace) {
         // ignore: avoid_print
-        print(e);
+        print(exception);
+        // ignore: avoid_print
+        print(stackTrace);
       }
     } else {
       await callback(dsl);
