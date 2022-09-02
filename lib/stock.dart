@@ -1,3 +1,12 @@
+class StockItem {
+  final String name;
+  final Amount amount;
+  final DateTime bestBefore;
+
+  const StockItem(
+      {required this.name, required this.amount, required this.bestBefore});
+}
+
 class Amount {
   final double amount;
   final Unit unit;

@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:home_assistant/app.dart';
 import 'package:home_assistant/stock.dart';
@@ -45,7 +49,7 @@ class AcceptanceTestDSL {
             : DateTime.now().add(const Duration(days: 14)));
   }
 
-  Future<List<Map<String, Object>>> listStockItems() async {
+  Future<List<Map<String, dynamic>>> listStockItems() async {
     return driver.listStockItems();
   }
 }
@@ -53,18 +57,26 @@ class AcceptanceTestDSL {
 abstract class AcceptanceTestDriver {
   Future<void> addStockItem(
       String itemName, Amount amount, DateTime bestBefore);
-  Future<List<Map<String, Object>>> listStockItems();
+  Future<List<Map<String, dynamic>>> listStockItems();
 }
 
 class _WidgetTesterDriver implements AcceptanceTestDriver {
   final WidgetTester tester;
 
-  _WidgetTesterDriver(this.tester);
+  _WidgetTesterDriver(this.tester) {
+    addTearDown(() async {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/stock_items.json');
+      if (file.existsSync()) {
+        file.deleteSync();
+      }
+    });
+  }
 
   @override
   Future<void> addStockItem(
       String itemName, Amount amount, DateTime bestBefore) async {
-    await tester.pumpWidget(const App());
+    await _openApp();
     await tester.tap(find.bySemanticsLabel('Add Stock Item'));
     await tester.pumpAndSettle();
     await tester.enterText(find.bySemanticsLabel('Item'), itemName);
@@ -78,10 +90,28 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await tester.tap(find.bySemanticsLabel('OK'));
     await tester.pumpAndSettle();
     await tester.tap(find.bySemanticsLabel('Add'));
+    await tester.pumpAndSettle();
   }
 
   @override
-  Future<List<Map<String, Object>>> listStockItems() async {
-    return [];
+  Future<List<Map<String, dynamic>>> listStockItems() async {
+    await _openApp();
+    await tester.tap(find.bySemanticsLabel('List Stock Items'));
+    await tester.pumpAndSettle();
+    final listTiles = tester.widgetList(find.byType(ListTile));
+    return listTiles.map((widget) {
+      final tile = widget as ListTile;
+      return {
+        'type': (tile.title as Text).data,
+        'amount': (tile.subtitle as Text).data,
+        'bestBefore': DateFormat('yyyy-MM-dd')
+            .format(DateFormat.yMd().parse((tile.trailing as Text).data!)),
+      };
+    }).toList();
+  }
+
+  Future<void> _openApp() async {
+    // Add unique key to app to force rebuild
+    await tester.pumpWidget(App(key: UniqueKey()));
   }
 }
