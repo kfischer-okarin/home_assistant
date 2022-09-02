@@ -21,13 +21,16 @@ class AddStockItem extends StatelessWidget {
             {required amount, required bestBefore, required itemName}) async {
           final directory = await getApplicationDocumentsDirectory();
           final file = File('${directory.path}/stock_items.json');
-          file.writeAsStringSync(jsonEncode([
-            {
-              'itemName': itemName,
-              'amount': amount.toString(),
-              'bestBefore': DateFormat('yyyy-MM-dd').format(bestBefore),
-            }
-          ]));
+          List<dynamic> contents = [];
+          if (file.existsSync()) {
+            contents = jsonDecode(file.readAsStringSync());
+          }
+          contents.add({
+            'itemName': itemName,
+            'amount': amount.toString(),
+            'bestBefore': DateFormat('yyyy-MM-dd').format(bestBefore),
+          });
+          file.writeAsStringSync(jsonEncode(contents));
         },
       )),
     );
