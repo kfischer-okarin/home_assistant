@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:home_assistant/stock.dart';
+import 'package:home_assistant/domain/stock.dart';
 
 class StockItems extends StatefulWidget {
   const StockItems({Key? key}) : super(key: key);

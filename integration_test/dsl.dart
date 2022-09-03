@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:home_assistant/app.dart';
-import 'package:home_assistant/stock.dart';
+import 'package:home_assistant/domain/stock.dart';
 
 void acceptanceTest(
     String description, Future<void> Function(AcceptanceTestDSL) callback,
