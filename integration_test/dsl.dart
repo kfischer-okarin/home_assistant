@@ -7,6 +7,8 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:home_assistant/app.dart';
 import 'package:home_assistant/domain/stock.dart';
+import 'package:home_assistant/domain/stock_service.dart';
+import 'package:home_assistant/infra/local_json_file_stock_item_repository.dart';
 
 void acceptanceTest(
     String description, Future<void> Function(AcceptanceTestDSL) callback,
@@ -112,6 +114,8 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
 
   Future<void> _openApp() async {
     // Add unique key to app to force rebuild
-    await tester.pumpWidget(App(key: UniqueKey()));
+    final repository = LocalJSONFileStockItemRepository('stock_items.json');
+    await repository.load();
+    await tester.pumpWidget(App(StockService(repository), key: UniqueKey()));
   }
 }
