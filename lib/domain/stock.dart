@@ -5,6 +5,21 @@ class StockItem {
 
   const StockItem(
       {required this.name, required this.amount, required this.bestBefore});
+
+  @override
+  String toString() {
+    return '{name: $name, amount: $amount, bestBefore: $bestBefore}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is StockItem &&
+      name == other.name &&
+      amount == other.amount &&
+      bestBefore == other.bestBefore;
+
+  @override
+  int get hashCode => Object.hash(name, amount, bestBefore);
 }
 
 class Amount {
