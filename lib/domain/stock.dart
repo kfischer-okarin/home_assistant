@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:home_assistant/util.dart';
 
 class StockItem extends Equatable {
   final String name;
@@ -10,9 +10,6 @@ class StockItem extends Equatable {
 
   @override
   List<Object?> get props => [name, amount, bestBefore];
-
-  @override
-  bool get stringify => true;
 }
 
 class Amount extends Equatable {
