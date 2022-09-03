@@ -1,4 +1,6 @@
-class StockItem {
+import 'package:equatable/equatable.dart';
+
+class StockItem extends Equatable {
   final String name;
   final Amount amount;
   final DateTime bestBefore;
@@ -7,22 +9,13 @@ class StockItem {
       {required this.name, required this.amount, required this.bestBefore});
 
   @override
-  String toString() {
-    return '{name: $name, amount: $amount, bestBefore: $bestBefore}';
-  }
+  List<Object?> get props => [name, amount, bestBefore];
 
   @override
-  bool operator ==(Object other) =>
-      other is StockItem &&
-      name == other.name &&
-      amount == other.amount &&
-      bestBefore == other.bestBefore;
-
-  @override
-  int get hashCode => Object.hash(name, amount, bestBefore);
+  bool get stringify => true;
 }
 
-class Amount {
+class Amount extends Equatable {
   final double amount;
   final Unit unit;
 
@@ -47,11 +40,7 @@ class Amount {
   }
 
   @override
-  bool operator ==(Object other) =>
-      other is Amount && amount == other.amount && unit == other.unit;
-
-  @override
-  int get hashCode => Object.hash(amount, unit);
+  List<Object?> get props => [amount, unit];
 }
 
 enum Unit {
