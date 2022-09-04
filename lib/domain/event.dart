@@ -15,13 +15,13 @@ class StockItemAdded extends Event {
       required this.amountUnit,
       required this.bestBefore});
 
-  StockItemAdded.generate(
+  StockItemAdded.build(
       {required this.itemId,
       required this.name,
       required this.amount,
       required this.amountUnit,
       required this.bestBefore})
-      : super.generate();
+      : super.build();
 
   @override
   Map<String, dynamic> toJson() {
@@ -48,7 +48,7 @@ abstract class Event extends Equatable {
 
   const Event(this.id, this.timestamp);
 
-  Event.generate() : this(EventId.generate(), DateTime.now());
+  Event.build() : this(EventId.generate(), DateTime.now());
 
   Map<String, dynamic> toJson() {
     return {
