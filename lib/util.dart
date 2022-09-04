@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart' as equatable;
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class Equatable extends equatable.Equatable {

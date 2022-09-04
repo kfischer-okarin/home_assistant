@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:home_assistant/util.dart';
+import 'package:meta/meta.dart';
 
 class StockItemAdded extends Event {
   final String itemId;
