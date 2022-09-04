@@ -8,7 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:home_assistant/app.dart';
 import 'package:home_assistant/domain/stock.dart';
 import 'package:home_assistant/domain/stock_service.dart';
-import 'package:home_assistant/infra/local_json_file_stock_item_repository.dart';
+import 'package:home_assistant/infra/local_json_file_event_repository.dart';
+import 'package:home_assistant/infra/event_sourced_stock_item_repository.dart';
 
 void acceptanceTest(
     String description, Future<void> Function(AcceptanceTestDSL) callback,
@@ -68,7 +69,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   _WidgetTesterDriver(this.tester) {
     addTearDown(() async {
       final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/stock_items.json');
+      final file = File('${directory.path}/events.json');
       if (file.existsSync()) {
         file.deleteSync();
       }
@@ -114,9 +115,13 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
 
   Future<void> _openApp() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
-    final repository = LocalJSONFileStockItemRepository(
-        File('${documentsDirectory.path}/stock_items.json'));
+    final eventRepository = LocalJSONFileEventRepository(
+        File('${documentsDirectory.path}/events.json'));
+    final stockItemRepository =
+        EventSourcedStockItemRepository(eventRepository);
     // Add unique key to app to force rebuild
-    await tester.pumpWidget(App(StockService(repository), key: UniqueKey()));
+    await tester.pumpWidget(App(
+        StockService(eventRepository, stockItemRepository),
+        key: UniqueKey()));
   }
 }
