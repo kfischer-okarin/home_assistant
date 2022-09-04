@@ -23,18 +23,30 @@ void main() {
 
   test('values', () {
     file.writeAsStringSync(jsonEncode([
-      {'itemName': 'Butter', 'amount': '200g', 'bestBefore': '2022-09-14'},
-      {'itemName': 'Cheese', 'amount': '150g', 'bestBefore': '2022-10-01'}
+      {
+        'id': 'abc',
+        'itemName': 'Butter',
+        'amount': '200g',
+        'bestBefore': '2022-09-14'
+      },
+      {
+        'id': 'def',
+        'itemName': 'Cheese',
+        'amount': '150g',
+        'bestBefore': '2022-10-01'
+      }
     ]));
 
     final repository = LocalJSONFileStockItemRepository(file);
 
     expect(repository.values, [
       StockItem(
+          id: const StockItemId('abc'),
           name: 'Butter',
           amount: const Amount(200, Unit.gram),
           bestBefore: DateTime(2022, 9, 14)),
       StockItem(
+          id: const StockItemId('def'),
           name: 'Cheese',
           amount: const Amount(150, Unit.gram),
           bestBefore: DateTime(2022, 10, 1))

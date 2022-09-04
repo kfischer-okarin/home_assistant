@@ -1,17 +1,36 @@
 import 'package:home_assistant/util.dart';
+import 'package:meta/meta.dart';
 
 class StockItem extends Equatable {
+  final StockItemId id;
   final String name;
   final Amount amount;
   final DateTime bestBefore;
 
   const StockItem(
-      {required this.name, required this.amount, required this.bestBefore});
+      {required this.id,
+      required this.name,
+      required this.amount,
+      required this.bestBefore});
+
+  StockItem.build({required name, required amount, required bestBefore})
+      : this(
+            id: StockItemId.generate(),
+            name: name,
+            amount: amount,
+            bestBefore: bestBefore);
 
   @override
   List<Object?> get props => [name, amount, bestBefore];
 }
 
+class StockItemId extends Id {
+  const StockItemId(super.value);
+
+  StockItemId.generate() : super.generate();
+}
+
+@immutable
 class Amount extends Equatable {
   final double amount;
   final Unit unit;

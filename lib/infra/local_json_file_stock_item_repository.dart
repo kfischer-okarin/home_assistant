@@ -12,6 +12,7 @@ class LocalJSONFileStockItemRepository extends StockItemRepository {
     if (file.existsSync()) {
       final json = jsonDecode(file.readAsStringSync());
       _stockItems.addAll(json.map<StockItem>((item) => StockItem(
+            id: StockItemId(item['id']),
             name: item['itemName'],
             amount: Amount.parse(item['amount']),
             bestBefore: DateTime.parse(item['bestBefore']),
