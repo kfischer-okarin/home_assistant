@@ -5,6 +5,12 @@ abstract class EventRepository extends Iterable<Event> {
 
   @override
   Iterator<Event> get iterator;
+
+  void subscribe(EventConsumer consumer);
+}
+
+abstract class EventConsumer {
+  void processEvent(Event event);
 }
 
 // Central event store with producers and consumers

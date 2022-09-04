@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_assistant/domain/event.dart';
+import 'package:home_assistant/domain/event_repository.dart';
 
 import 'package:home_assistant/infra/local_json_file_event_repository.dart';
 
@@ -90,4 +91,29 @@ void main() {
           bestBefore: DateTime(2022, 9, 18))
     ]);
   });
+
+  test('notifies consumers', () {
+    final repository = LocalJSONFileEventRepository(file);
+    final consumer = TestConsumer();
+    repository.subscribe(consumer);
+    final event = StockItemAdded(const EventId('abc'), DateTime(2022, 9, 4, 12),
+        itemId: 'def',
+        name: 'Butter',
+        amount: 200,
+        amountUnit: 'g',
+        bestBefore: DateTime(2022, 9, 18));
+
+    repository.add(event);
+
+    expect(consumer.processedEvents, [event]);
+  });
+}
+
+class TestConsumer extends EventConsumer {
+  final List<Event> processedEvents = [];
+
+  @override
+  void processEvent(Event event) {
+    processedEvents.add(event);
+  }
 }
