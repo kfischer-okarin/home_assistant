@@ -3,41 +3,31 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_assistant/domain/stock.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'package:home_assistant/infra/local_json_file_stock_item_repository.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  final file = File('${Directory.systemTemp.path}/database.json');
 
-  setUpAll(() {
-    PathProviderPlatform.instance = _FakePathProviderPlatform();
-  });
-
-  tearDown(() async {
-    final file = await _getFile('database.json');
+  tearDown(() {
     if (file.existsSync()) {
       file.deleteSync();
     }
   });
 
-  test('values when file does not exist', () async {
-    final repository = LocalJSONFileStockItemRepository('database.json');
-    await repository.load();
+  test('values when file does not exist', () {
+    final repository = LocalJSONFileStockItemRepository(file);
 
     expect(repository.values, isEmpty);
   });
 
-  test('values', () async {
-    final file = await _getFile('database.json');
+  test('values', () {
     file.writeAsStringSync(jsonEncode([
       {'itemName': 'Butter', 'amount': '200g', 'bestBefore': '2022-09-14'},
       {'itemName': 'Cheese', 'amount': '150g', 'bestBefore': '2022-10-01'}
     ]));
 
-    final repository = LocalJSONFileStockItemRepository('database.json');
-    await repository.load();
+    final repository = LocalJSONFileStockItemRepository(file);
 
     expect(repository.values, [
       StockItem(
@@ -50,16 +40,4 @@ void main() {
           bestBefore: DateTime(2022, 10, 1))
     ]);
   });
-}
-
-Future<File> _getFile(String fileName) async {
-  final directory = await getApplicationDocumentsDirectory();
-  return File('${directory.path}/$fileName');
-}
-
-class _FakePathProviderPlatform extends PathProviderPlatform {
-  @override
-  Future<String?> getApplicationDocumentsPath() async {
-    return '/tmp';
-  }
 }

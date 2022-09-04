@@ -113,9 +113,10 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   }
 
   Future<void> _openApp() async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final repository = LocalJSONFileStockItemRepository(
+        File('${documentsDirectory.path}/stock_items.json'));
     // Add unique key to app to force rebuild
-    final repository = LocalJSONFileStockItemRepository('stock_items.json');
-    await repository.load();
     await tester.pumpWidget(App(StockService(repository), key: UniqueKey()));
   }
 }
