@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_assistant/domain/event.dart';
@@ -7,16 +6,11 @@ import 'package:home_assistant/domain/event_repository.dart';
 
 import 'package:home_assistant/infra/local_json_file_event_repository.dart';
 
+import '../test_helper.dart';
+
 void main() {
-  final file = File('${Directory.systemTemp.path}/events.json');
-
-  tearDown(() {
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-  });
-
   test('add an event', () {
+    final file = createTempFile();
     final repository = LocalJSONFileEventRepository(file);
 
     repository.add(StockItemAdded(
@@ -44,7 +38,7 @@ void main() {
   });
 
   test('iterate over all events', () {
-    final repository = LocalJSONFileEventRepository(file);
+    final repository = LocalJSONFileEventRepository(createTempFile());
 
     final event1 = StockItemAdded(
         const EventId('abc'), DateTime(2022, 9, 4, 12),
@@ -67,6 +61,7 @@ void main() {
   });
 
   test('reads existing events', () {
+    final file = createTempFile();
     file.writeAsStringSync(jsonEncode([
       {
         'id': 'abc',
@@ -93,7 +88,7 @@ void main() {
   });
 
   test('notifies consumers', () {
-    final repository = LocalJSONFileEventRepository(file);
+    final repository = LocalJSONFileEventRepository(createTempFile());
     final consumer = TestConsumer();
     repository.subscribe(consumer);
     final event = StockItemAdded(const EventId('abc'), DateTime(2022, 9, 4, 12),
