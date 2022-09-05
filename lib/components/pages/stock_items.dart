@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:home_assistant/domain/home_assistant_service.dart';
+import 'package:home_assistant/domain/stock.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -13,16 +14,22 @@ class StockItems extends StatefulWidget {
 }
 
 class _StockItemsState extends State<StockItems> {
+  List<StockItem> _stockItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStockItems();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final service = Provider.of<HomeAssistantService>(context);
-    final stockItems = service.listStockItems();
     return Scaffold(
         body: ListView.builder(
             padding: const EdgeInsets.all(8.0),
-            itemCount: stockItems.length,
+            itemCount: _stockItems.length,
             itemBuilder: (context, index) {
-              final item = stockItems[index];
+              final item = _stockItems[index];
               return ListTile(
                 title: Text(item.name),
                 subtitle: Text(item.amount.toString()),
@@ -32,16 +39,25 @@ class _StockItemsState extends State<StockItems> {
               );
             }),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const AddStockItem(),
               ),
             );
+            _loadStockItems();
           },
           tooltip: 'Add Stock Item',
           child: const Icon(Icons.add),
         ));
+  }
+
+  void _loadStockItems() async {
+    final service = Provider.of<HomeAssistantService>(context, listen: false);
+    final stockItems = service.listStockItems();
+    setState(() {
+      _stockItems = stockItems;
+    });
   }
 }

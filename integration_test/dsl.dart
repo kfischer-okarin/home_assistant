@@ -79,7 +79,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   @override
   Future<void> addStockItem(
       String itemName, Amount amount, DateTime bestBefore) async {
-    await _openApp();
+    await _openStockItemList();
     await tester.tap(find.bySemanticsLabel('Add Stock Item'));
     await tester.pumpAndSettle();
     await tester.enterText(find.bySemanticsLabel('Item'), itemName);
@@ -98,7 +98,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
 
   @override
   Future<List<Map<String, dynamic>>> listStockItems() async {
-    await _openApp();
+    await _openStockItemList();
     final listTiles = tester.widgetList(find.byType(ListTile));
     return listTiles.map((widget) {
       final tile = widget as ListTile;
@@ -109,6 +109,13 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
             .format(DateFormat.yMd().parse((tile.trailing as Text).data!)),
       };
     }).toList();
+  }
+
+  Future<void> _openStockItemList() async {
+    if (!find.byType(App).precache()) {
+      await _openApp();
+    }
+    await tester.tap(find.byIcon(Icons.kitchen));
   }
 
   Future<void> _openApp() async {
