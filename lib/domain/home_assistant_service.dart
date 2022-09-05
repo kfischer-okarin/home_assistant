@@ -1,13 +1,15 @@
 import 'event.dart';
 import 'event_repository.dart';
 import 'stock.dart';
-import 'stock_item_repository.dart';
+import 'event_sourced_stock_item_repository.dart';
 
 class HomeAssistantService {
   final EventRepository _eventRepository;
-  final StockItemRepository _stockItemRepository;
+  late final EventSourcedStockItemRepository _stockItemRepository;
 
-  HomeAssistantService(this._eventRepository, this._stockItemRepository);
+  HomeAssistantService(this._eventRepository) {
+    _stockItemRepository = EventSourcedStockItemRepository(_eventRepository);
+  }
 
   void addStockItem(
       {required String name,

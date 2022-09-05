@@ -1,7 +1,7 @@
-import 'package:home_assistant/domain/event.dart';
-import 'package:home_assistant/domain/event_repository.dart';
-import 'package:home_assistant/domain/stock_item_repository.dart';
-import 'package:home_assistant/domain/stock.dart';
+import 'event.dart';
+import 'event_repository.dart';
+import 'stock_item_repository.dart';
+import 'stock.dart';
 
 class EventSourcedStockItemRepository extends StockItemRepository
     implements EventConsumer {
