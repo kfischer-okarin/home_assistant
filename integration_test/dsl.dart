@@ -89,7 +89,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     await tester.pumpAndSettle();
     await tester.tap(find.bySemanticsLabel('Switch to input'));
     await tester.pumpAndSettle();
-    tester.testTextInput.enterText(DateFormat('MM/dd/yyyy').format(bestBefore));
+    tester.testTextInput.enterText(DateFormat('M/d/yyyy').format(bestBefore));
     await tester.tap(find.bySemanticsLabel('OK'));
     await tester.pumpAndSettle();
     await tester.tap(find.bySemanticsLabel('Add'));

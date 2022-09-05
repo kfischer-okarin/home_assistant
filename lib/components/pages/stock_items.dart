@@ -26,7 +26,9 @@ class _StockItemsState extends State<StockItems> {
               return ListTile(
                 title: Text(item.name),
                 subtitle: Text(item.amount.toString()),
-                trailing: Text(DateFormat.yMd().format(item.bestBefore)),
+                trailing: Text(
+                    DateFormat.yMd(Localizations.localeOf(context).languageCode)
+                        .format(item.bestBefore)),
               );
             }),
         floatingActionButton: FloatingActionButton(

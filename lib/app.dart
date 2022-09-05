@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:home_assistant/components/pages/stock_items.dart';
@@ -17,6 +18,16 @@ class App extends StatelessWidget {
         child: MaterialApp(
             title: 'Home Assistant',
             locale: locale,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', ''),
+              Locale('de', ''),
+              Locale('ja', ''),
+            ],
             theme: ThemeData(
               tabBarTheme: const TabBarTheme(
                 labelColor: Colors.black,

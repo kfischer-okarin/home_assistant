@@ -1,4 +1,5 @@
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 import 'package:home_assistant/domain/stock.dart';
@@ -60,6 +61,9 @@ class _StockItemFormState extends State<StockItemForm> {
             padding: const EdgeInsets.all(8),
             child: DateTimePicker(
               type: DateTimePickerType.date,
+              dateMask:
+                  DateFormat.yMd(Localizations.localeOf(context).languageCode)
+                      .pattern,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Best Before',
