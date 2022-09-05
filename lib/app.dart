@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:home_assistant/components/pages/home.dart';
+import 'package:home_assistant/components/pages/stock_items.dart';
 import 'package:home_assistant/domain/stock_service.dart';
 
 class App extends StatelessWidget {
@@ -14,11 +14,30 @@ class App extends StatelessWidget {
     return Provider.value(
         value: _stockService,
         child: MaterialApp(
-          title: 'Home Assistant',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: const Home(),
-        ));
+            title: 'Home Assistant',
+            theme: ThemeData(
+              tabBarTheme: const TabBarTheme(
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+              ),
+              primarySwatch: Colors.blue,
+            ),
+            home: DefaultTabController(
+                length: 1,
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: const Text('Home Assistant'),
+                  ),
+                  bottomNavigationBar: const BottomAppBar(
+                    child: TabBar(tabs: [
+                      Tab(icon: Icon(Icons.kitchen)),
+                    ]),
+                  ),
+                  body: const TabBarView(
+                    children: [
+                      StockItems(),
+                    ],
+                  ),
+                ))));
   }
 }

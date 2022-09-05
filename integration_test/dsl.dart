@@ -99,8 +99,6 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   @override
   Future<List<Map<String, dynamic>>> listStockItems() async {
     await _openApp();
-    await tester.tap(find.bySemanticsLabel('List Stock Items'));
-    await tester.pumpAndSettle();
     final listTiles = tester.widgetList(find.byType(ListTile));
     return listTiles.map((widget) {
       final tile = widget as ListTile;

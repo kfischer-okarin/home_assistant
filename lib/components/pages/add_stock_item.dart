@@ -20,6 +20,7 @@ class AddStockItem extends StatelessWidget {
             {required amount, required bestBefore, required itemName}) async {
           stockService.addStockItem(
               amount: amount, bestBefore: bestBefore, name: itemName);
+          Navigator.pop(context);
         },
       )),
     );
