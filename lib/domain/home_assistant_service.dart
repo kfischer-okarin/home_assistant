@@ -3,11 +3,11 @@ import 'event_repository.dart';
 import 'stock.dart';
 import 'stock_item_repository.dart';
 
-class StockService {
+class HomeAssistantService {
   final EventRepository _eventRepository;
   final StockItemRepository _stockItemRepository;
 
-  StockService(this._eventRepository, this._stockItemRepository);
+  HomeAssistantService(this._eventRepository, this._stockItemRepository);
 
   void addStockItem(
       {required String name,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_assistant/domain/stock_service.dart';
+import 'package:home_assistant/domain/home_assistant_service.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +15,8 @@ class StockItems extends StatefulWidget {
 class _StockItemsState extends State<StockItems> {
   @override
   Widget build(BuildContext context) {
-    final stockService = Provider.of<StockService>(context);
-    final stockItems = stockService.listStockItems();
+    final service = Provider.of<HomeAssistantService>(context);
+    final stockItems = service.listStockItems();
     return Scaffold(
         body: ListView.builder(
             padding: const EdgeInsets.all(8.0),

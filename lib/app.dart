@@ -3,18 +3,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:home_assistant/components/pages/stock_items.dart';
-import 'package:home_assistant/domain/stock_service.dart';
+import 'package:home_assistant/domain/home_assistant_service.dart';
 
 class App extends StatelessWidget {
-  final StockService _stockService;
+  final HomeAssistantService _service;
   final Locale? locale;
 
-  const App(this._stockService, {Key? key, this.locale}) : super(key: key);
+  const App(this._service, {Key? key, this.locale}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Provider.value(
-        value: _stockService,
+        value: _service,
         child: MaterialApp(
             title: 'Home Assistant',
             locale: locale,

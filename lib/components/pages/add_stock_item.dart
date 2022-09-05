@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_assistant/domain/stock_service.dart';
+import 'package:home_assistant/domain/home_assistant_service.dart';
 import 'package:provider/provider.dart';
 
 import './add_stock_item/stock_item_form.dart';
@@ -9,7 +9,7 @@ class AddStockItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stockService = Provider.of<StockService>(context);
+    final service = Provider.of<HomeAssistantService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +18,7 @@ class AddStockItem extends StatelessWidget {
       body: Center(child: StockItemForm(
         onSubmit: (
             {required amount, required bestBefore, required itemName}) async {
-          stockService.addStockItem(
+          service.addStockItem(
               amount: amount, bestBefore: bestBefore, name: itemName);
           Navigator.pop(context);
         },
