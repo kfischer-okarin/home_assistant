@@ -29,6 +29,8 @@ dependencies:
   equatable: ^2.0.5
   uuid: ^3.0.6
   meta: ^1.7.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
