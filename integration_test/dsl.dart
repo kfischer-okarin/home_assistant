@@ -120,6 +120,7 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
     // Add unique key to app to force rebuild
     await tester.pumpWidget(App(
         StockService(eventRepository, stockItemRepository),
-        key: UniqueKey()));
+        key: UniqueKey(),
+        locale: const Locale('en')));
   }
 }

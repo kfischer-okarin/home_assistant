@@ -6,8 +6,9 @@ import 'package:home_assistant/domain/stock_service.dart';
 
 class App extends StatelessWidget {
   final StockService _stockService;
+  final Locale? locale;
 
-  const App(this._stockService, {Key? key}) : super(key: key);
+  const App(this._stockService, {Key? key, this.locale}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class App extends StatelessWidget {
         value: _stockService,
         child: MaterialApp(
             title: 'Home Assistant',
+            locale: locale,
             theme: ThemeData(
               tabBarTheme: const TabBarTheme(
                 labelColor: Colors.black,
