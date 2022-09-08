@@ -30,6 +30,27 @@ class StockItemId extends Id {
   StockItemId.generate() : super.generate();
 }
 
+class ItemType extends Equatable {
+  final ItemTypeId id;
+  final String name;
+  final Unit defaultUnit;
+
+  const ItemType(
+      {required this.id, required this.name, required this.defaultUnit});
+
+  ItemType.build({required name, required defaultUnit})
+      : this(id: ItemTypeId.generate(), name: name, defaultUnit: defaultUnit);
+
+  @override
+  List<Object?> get props => [id, name, defaultUnit];
+}
+
+class ItemTypeId extends Id {
+  const ItemTypeId(super.value);
+
+  ItemTypeId.generate() : super.generate();
+}
+
 @immutable
 class Amount extends Equatable {
   final double amount;
@@ -59,8 +80,14 @@ class Amount extends Equatable {
   List<Object?> get props => [amount, unit];
 }
 
+// Unit<T extends UnitType>
+// Unit<BaseUnit>
+// Unit<DerivedUnit>
+
 enum Unit {
-  gram('g');
+  gram('g'),
+  mililiter('ml'),
+  piece('');
 
   final String symbol;
 
@@ -74,5 +101,14 @@ enum Unit {
     }
 
     throw 'Invalid unit: $string';
+  }
+
+  String get humanReadableLabel {
+    switch (this) {
+      case Unit.piece:
+        return 'pieces';
+      default:
+        return symbol;
+    }
   }
 }

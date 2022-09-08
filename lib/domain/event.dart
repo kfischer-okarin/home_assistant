@@ -1,6 +1,35 @@
 import 'package:home_assistant/util.dart';
 import 'package:meta/meta.dart';
 
+class ItemTypeAdded extends Event {
+  final String itemTypeId;
+  final String name;
+  final String defaultUnit;
+
+  const ItemTypeAdded(super.id, super.timestamp,
+      {required this.itemTypeId,
+      required this.name,
+      required this.defaultUnit});
+
+  ItemTypeAdded.build(
+      {required this.itemTypeId, required this.name, required this.defaultUnit})
+      : super.build();
+
+  @override
+  Map<String, dynamic> toJson() {
+    final result = super.toJson();
+    result.addAll({
+      'itemTypeId': itemTypeId,
+      'name': name,
+      'defaultUnit': defaultUnit,
+    });
+    return result;
+  }
+
+  @override
+  List<Object?> get props => [id, timestamp, itemTypeId, name, defaultUnit];
+}
+
 class StockItemAdded extends Event {
   final String itemId;
   final String name;

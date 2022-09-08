@@ -6,6 +6,20 @@ import './dsl.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  group('Item Types', () {
+    acceptanceTest('Added item types should be visible in the item type list',
+        (dsl) async {
+      await dsl.addItemType('Milk', defaultUnit: 'ml');
+      await dsl.addItemType('Butter', defaultUnit: 'g');
+
+      final itemTypes = await dsl.listItemTypes();
+      expect(itemTypes, [
+        {'name': 'Butter', 'defaultUnit': 'g'},
+        {'name': 'Milk', 'defaultUnit': 'ml'}
+      ]);
+    });
+  });
+
   acceptanceTest('Added stock items should be visible in the stock overview',
       (dsl) async {
     await dsl.addStockItem('Butter', amount: '200g', bestBefore: '2022-09-14');

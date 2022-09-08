@@ -41,6 +41,14 @@ class AcceptanceTestDSL {
 
   AcceptanceTestDSL(this.driver);
 
+  Future<void> addItemType(String name, {String? defaultUnit}) async {
+    await driver.addItemType(name, Unit.parse(defaultUnit ?? 'g'));
+  }
+
+  Future<List<Map<String, dynamic>>> listItemTypes() async {
+    return driver.listItemTypes();
+  }
+
   Future<void> addStockItem(String itemName,
       {required String amount, String? bestBefore}) async {
     await driver.addStockItem(
@@ -57,6 +65,8 @@ class AcceptanceTestDSL {
 }
 
 abstract class AcceptanceTestDriver {
+  Future<void> addItemType(String name, Unit preferredUnit);
+  Future<List<Map<String, dynamic>>> listItemTypes();
   Future<void> addStockItem(
       String itemName, Amount amount, DateTime bestBefore);
   Future<List<Map<String, dynamic>>> listStockItems();
@@ -73,6 +83,32 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
         file.deleteSync();
       }
     });
+  }
+
+  @override
+  Future<void> addItemType(String name, Unit defaultUnit) async {
+    await _openItemTypeList();
+    await tester.tap(find.bySemanticsLabel('Add Item Type'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.bySemanticsLabel('Name'), name);
+    await tester.tap(find.text('g'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(defaultUnit.humanReadableLabel).last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.bySemanticsLabel('Add'));
+    await tester.pumpAndSettle();
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> listItemTypes() async {
+    await _openItemTypeList();
+    final listTiles = tester.widgetList(find.byType(ListTile));
+    return listTiles.map((widget) {
+      final tile = widget as ListTile;
+      final subtitle = (tile.subtitle as Text).data!;
+      final unit = RegExp(r'Unit: (\w+)').firstMatch(subtitle)!.group(1)!;
+      return {'name': (tile.title as Text).data, 'defaultUnit': unit};
+    }).toList();
   }
 
   @override
@@ -111,13 +147,22 @@ class _WidgetTesterDriver implements AcceptanceTestDriver {
   }
 
   Future<void> _openStockItemList() async {
-    if (!find.byType(App).precache()) {
-      await _openApp();
-    }
+    await _openAppIfNecessary();
     await tester.tap(find.byIcon(Icons.kitchen));
+    await tester.pumpAndSettle();
   }
 
-  Future<void> _openApp() async {
+  Future<void> _openItemTypeList() async {
+    await _openAppIfNecessary();
+    await tester.tap(find.byIcon(Icons.menu_book));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> _openAppIfNecessary() async {
+    if (find.byType(App).precache()) {
+      return;
+    }
+
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final eventRepository = LocalJSONFileEventRepository(
         File('${documentsDirectory.path}/events.json'));
